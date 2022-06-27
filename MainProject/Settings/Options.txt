@@ -1,0 +1,13 @@
+﻿* AIMMS
+constraint_listing 3
+rounding_compatibility Aimms_3_7
+solution_listing 3
+use_UTC_forCaseAndStartEndDate 1
+* AOA
+* CBC 2.9
+* IPOPT 3.11
+* NETSOL
+* Environment
+Startup_Case "data\init_data.data"
+Default_UI 0
+Open_WebUI_on_Startup 1

@@ -1,0 +1,306 @@
+## ams_version=1.0
+
+Model Main_aimms_challenge {
+	Procedure pr_goto_InputMainPage {
+		Body: {
+			webui::OpenPage('main_input_page');
+		}
+	}
+	Procedure pr_goto_ResultPage {
+		Body: {
+			webui::OpenPage('result_page');
+		}
+	}
+	Procedure pr_maxCO2 {
+		Body: {
+			solve mp_solve;
+			
+			!p_tree_area(i_tree) := p_dimension(ep_treeFamily(i_tree))*p_dimension(ep_treeFamily(i_tree));
+			
+			pr_goto_ResultPage;
+		}
+	}
+	Set s_regions {
+		Index: i_region;
+		Definition: ElementRange(1, 4, 1, "Region-");
+		Comment: "set of different regions";
+	}
+	Set s_trees {
+		Index: i_tree;
+		Definition: ElementRange(1, 20, 1, "Type-");
+		Comment: "set of different species of trees";
+	}
+	Set s_families {
+		Index: i_family, j_family;
+		Definition: ElementRange(1, 5, 1, "Family-");
+		Comment: {
+			"set for different families of trees
+			- each tree i_tree belongs to exactly one family i_family"
+		}
+	}
+	ElementParameter ep_treeFamily {
+		IndexDomain: i_tree;
+		Range: s_families;
+		Definition: Element(s_families, Mod(Ord(i_tree), 5)+1);
+		Comment: "which i_family does i_tree belong to ?";
+	}
+	Parameter p_regionFamilies {
+		IndexDomain: (i_region, i_family);
+		Range: binary;
+		InitialData: {
+			data 
+			{ ( Region-1, Family-1 ) : 1,  ( Region-1, Family-2 ) : 1,  ( Region-1, Family-3 ) : 1,  ( Region-2, Family-2 ) : 1,
+			  ( Region-2, Family-4 ) : 1,  ( Region-2, Family-5 ) : 1,  ( Region-3, Family-1 ) : 1,  ( Region-3, Family-3 ) : 1,
+			  ( Region-3, Family-4 ) : 1,  ( Region-3, Family-5 ) : 1,  ( Region-4, Family-1 ) : 1,  ( Region-4, Family-2 ) : 1,
+			  ( Region-4, Family-4 ) : 1,  ( Region-4, Family-5 ) : 1 }
+		}
+		Comment: "only certain families of trees are viable in a given region";
+	}
+	Parameter p_area {
+		IndexDomain: i_region;
+		Unit: m^2;
+		InitialData: data { Region-1 : 1600,  Region-2 : 1200,  Region-3 : 2000,  Region-4 : 1200 };
+		Comment: "area available in each i_region";
+	}
+	Parameter p_dimension {
+		IndexDomain: i_family;
+		Unit: m;
+		InitialData: data { Family-1 : 4,  Family-2 : 3,  Family-3 : 4,  Family-4 : 5,  Family-5 : 6 };
+		Comment: "each tree is planted in a square plot of side - p_dimension";
+	}
+	Parameter p_sequestration {
+		IndexDomain: i_tree;
+		Unit: ton;
+		InitialData: {
+			data 
+			{ Type-01 : 353,  Type-02 : 234,  Type-03 : 293,  Type-04 : 342,  Type-05 : 222,  Type-06 : 275,  Type-07 : 304,
+			  Type-08 : 303,  Type-09 : 365,  Type-10 : 439,  Type-11 : 370,  Type-12 : 350,  Type-13 : 353,  Type-14 : 219,
+			  Type-15 : 398,  Type-16 : 289,  Type-17 : 262,  Type-18 : 295,  Type-19 : 276,  Type-20 : 255 }
+		}
+		Comment: "how much CO2 each tree type recovers in a year";
+	}
+	Parameter p_cost {
+		IndexDomain: i_tree;
+		Unit: $;
+		InitialData: {
+			data 
+			{ Type-01 : 874,  Type-02 : 935,  Type-03 : 873,  Type-04 : 650,  Type-05 : 887,  Type-06 : 802,  Type-07 : 836,
+			  Type-08 : 985,  Type-09 : 520,  Type-10 : 829,  Type-11 : 861,  Type-12 : 962,  Type-13 : 845,  Type-14 : 800,
+			  Type-15 : 834,  Type-16 : 962,  Type-17 : 859,  Type-18 : 640,  Type-19 : 968,  Type-20 : 920 }
+		}
+		Comment: "how much does it cost to plant 1 i_tree";
+	}
+	Parameter p_forbidden {
+		IndexDomain: (i_family, j_family);
+		Range: binary;
+		InitialData: {
+			data 
+			{ ( Family-1, Family-2 ) : 1,  ( Family-2, Family-1 ) : 1,  ( Family-3, Family-5 ) : 1,  ( Family-4, Family-5 ) : 1,
+			  ( Family-5, Family-3 ) : 1,  ( Family-5, Family-4 ) : 1 }
+		}
+		Comment: {
+			"combinations of families with this data = 1 cannot be planted in the same region.
+			for example, trees belonging to Family-1 and Family-2 both cannot be planted in the same region. At most one of them"
+		}
+	}
+	Parameter p_budget {
+		Unit: $;
+		InitialData: 400000;
+		Comment: "total budget available";
+	}
+	Section Math_Model {
+		DeclarationSection Misc_parameters {
+			Parameter p_budget_division {
+				Range: binary;
+				Default: 0;
+			}
+			Parameter p_budget_region {
+				IndexDomain: i_region;
+				Unit: $;
+				Definition: {
+					if p_budget_division then
+						p_budget/card(s_regions)
+					endif;
+				}
+			}
+			Parameter p_tree_area {
+				IndexDomain: i_tree;
+				Unit: m^2;
+				Definition: {
+					p_dimension(ep_treeFamily(i_tree))*p_dimension(ep_treeFamily(i_tree));
+				}
+			}
+		}
+		DeclarationSection Variables_declaration {
+			Variable v_CO2 {
+				Range: free;
+				Unit: ton;
+				Definition: {
+					sum((i_region, i_tree), v_tree_in_region(i_tree, i_region)*p_sequestration(i_tree));
+				}
+			}
+			Variable v_tree_in_region {
+				IndexDomain: (i_tree, i_region) | p_regionFamilies(i_region, ep_treeFamily(i_tree)) and not p_forbidden(ep_treeFamily(i_tree), ep_treeFamily(i_tree));
+				Range: nonnegative;
+			}
+			Variable v_cost_per_region {
+				IndexDomain: i_region;
+				Range: free;
+				Unit: $;
+				Definition: {
+					sum(i_tree, v_tree_in_region(i_tree, i_region)*p_cost(i_tree));
+				}
+			}
+			Variable c_cost_total {
+				Range: free;
+				Unit: $;
+				Definition: {
+					sum(i_region, v_cost_per_region(i_region));
+				}
+			}
+		}
+		DeclarationSection Constraints_declaration {
+			Constraint c_area {
+				IndexDomain: i_region;
+				Unit: m^2;
+				Definition: {
+					sum(i_tree, v_tree_in_region(i_tree, i_region)*p_tree_area(i_tree)) <= p_area(i_region);
+				}
+			}
+			Constraint c_budget {
+				Unit: $;
+				Definition: {
+					sum((i_region, i_tree), v_tree_in_region(i_tree, i_region)*p_cost(i_tree)) <= p_budget;
+				}
+			}
+			Constraint c_budget_region {
+				IndexDomain: i_region | p_budget_division;
+				Unit: $;
+				Definition: {
+					!if p_budget_division then
+					!	sum(i_tree, v_tree_in_region(i_tree, i_region)*p_cost(i_tree)) <= p_budget_region(i_region)
+					!
+					!endif;
+					
+					v_cost_per_region(i_region) <= p_budget_region(i_region);
+				}
+			}
+		}
+	}
+	Section Math_Declaration {
+		MathematicalProgram mp_solve {
+			Objective: v_CO2;
+			Direction: maximize;
+			Constraints: s_constraints;
+			Variables: s_variables;
+			Type: Automatic;
+		}
+		Set s_constraints {
+			SubsetOf: AllConstraints;
+			Definition: {
+				AllConstraints*Math_Model;
+			}
+		}
+		Set s_variables {
+			SubsetOf: AllVariables;
+			Definition: {
+				AllVariables*Math_Model;
+			}
+		}
+	}
+	Section WebUI_stuffs {
+		StringParameter p_SecondaryActionSpec_Input {
+			IndexDomain: (webui::indexPageExtension,webui::indexWidgetActionSpec);
+			Definition: {
+				data { 
+					( 1, displaytext ) : "Solve",
+					( 1, icon): "aimms-pen",  
+					( 1, procedure ) : "pr_maxCO2",  
+					( 1, state ) : "Active"
+					 }
+			}
+		}
+		StringParameter p_SecondaryActionSpec_Result {
+			IndexDomain: (webui::indexPageExtension,webui::indexWidgetActionSpec);
+			Definition: {
+				data { 
+				
+					( 1, displaytext ) : "Back to input",  
+					( 1, icon): "aimms-home",
+					( 1, procedure ) : "pr_goto_InputMainPage",  
+					( 1, state ) : "Active",
+				
+					( 2, displaytext ) : "Solve",
+					( 2, icon): "aimms-pen",  
+					( 2, procedure ) : "pr_maxCO2",  
+					( 2, state ) : "Active"
+					 }
+			}
+		}
+	}
+	Procedure PostMainInitialization {
+		Comment: {
+			"Add initialization statements here that require that the libraries are already initialized properly,
+			or add statements that require the Data Management module to be initialized."
+		}
+	}
+	Procedure MainInitialization {
+		Comment: "Add initialization statements here that do NOT require any library being initialized already.";
+	}
+	Procedure MainExecution;
+	Procedure PreMainTermination {
+		Body: {
+			return DataManagementExit();
+		}
+		Comment: {
+			"Add termination statements here that require all libraries to be still alive.
+			Return 1 if you allow the termination sequence to continue.
+			Return 0 if you want to cancel the termination sequence."
+		}
+	}
+	Procedure MainTermination {
+		Body: {
+			return 1;
+		}
+		Comment: {
+			"Add termination statements here that do not require all libraries to be still alive.
+			Return 1 to allow the termination sequence to continue.
+			Return 0 if you want to cancel the termination sequence.
+			It is recommended to only use the procedure PreMainTermination to cancel the termination sequence and let this procedure always return 1."
+		}
+	}
+	Section Quantities_and_Units {
+		Comment: {
+			"This section contains all the units and quantities that are added automatically by AIMMS.
+			It is recommended to declare all your quantities here."
+		}
+		Quantity SI_Time_Duration {
+			BaseUnit: s;
+			Conversions: minute->s : #-># * 60;
+			Comment: {
+				"Expresses the value for the duration of periods.
+				
+				The unit s has been added automatically because it is a required unit for AimmsWebUI.
+				
+				The unit minute has been added automatically because it is a required unit for AimmsWebUI."
+			}
+		}
+		Quantity SI_Length {
+			BaseUnit: m;
+			Comment: "Expresses the value of a distance.";
+		}
+		Quantity SI_Area {
+			BaseUnit: m2 = m^2;
+			Comment: "Expresses the value of the extent of a surface.";
+		}
+		Quantity SI_Mass {
+			BaseUnit: kg;
+			Conversions: ton->kg : #-># * 1000;
+			Comment: "Expresses the value for the amount of matter.";
+		}
+		Quantity Currency {
+			BaseUnit: $;
+			Conversions: M$->$ : #-># * 1000000;
+		}
+	}
+}

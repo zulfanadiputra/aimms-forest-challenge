@@ -1,0 +1,939 @@
+{
+  "version": "4.67.0",
+  "application": {
+    "aimms.widget.type": {
+      "literal": "application"
+    },
+    "browsername": {
+      "aimms": {
+        "contents": [
+          "webui::ClientBrowserName"
+        ]
+      }
+    },
+    "browsertimezone": {
+      "aimms": {
+        "contents": [
+          "webui::BrowserTimeZone"
+        ]
+      }
+    },
+    "ignoredst": {
+      "aimms": {
+        "contents": [
+          "webui::IgnoreDST"
+        ]
+      }
+    },
+    "pages": {
+      "literal": {
+        "name": "root",
+        "slug": "root",
+        "children": [
+          {
+            "name": "Main Project",
+            "slug": "main_project",
+            "children": [
+              {
+                "name": "home",
+                "slug": "home",
+                "type": "pagev2-grid",
+                "children": []
+              },
+              {
+                "name": "Main Input Page",
+                "type": "pagev2-grid",
+                "slug": "main_input_page",
+                "children": []
+              },
+              {
+                "name": "Result Page",
+                "type": "pagev2-grid",
+                "slug": "result_page",
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "theme.classic": {
+      "literal": "NOT_ALLOWED"
+    },
+    "timezone": {
+      "aimms": {
+        "contents": [
+          "webui::DisplayTimeZone"
+        ]
+      }
+    },
+    "timezone.dst.readonly": {
+      "aimms": {
+        "contents": [
+          "webui::DefaultDSTSettingForDisplayTimeZone"
+        ]
+      }
+    }
+  },
+  "layouts/custom_3c6f3b46-ece0-4647-b9ee-fdc7039ee8c4": {
+    "definition": {
+      "literal": {
+        "componentName": "Grid",
+        "props": {
+          "gridTemplateColumns": "1fr 1fr",
+          "gridTemplateRows": "1fr 1fr",
+          "gridTemplateAreas": "\"area-a area-b\" \"area-c area-d\""
+        },
+        "items": [
+          {
+            "componentName": "WidgetArea",
+            "props": {
+              "gridArea": "area-a",
+              "name": "Area A",
+              "gridAutoFlow": "column"
+            }
+          },
+          {
+            "componentName": "WidgetArea",
+            "props": {
+              "gridArea": "area-b",
+              "name": "Area B",
+              "gridAutoFlow": "column"
+            }
+          },
+          {
+            "componentName": "WidgetArea",
+            "props": {
+              "gridArea": "area-c",
+              "name": "Area C",
+              "gridAutoFlow": "row"
+            }
+          },
+          {
+            "componentName": "WidgetArea",
+            "props": {
+              "gridArea": "area-d",
+              "name": "Area D",
+              "gridAutoFlow": "row"
+            }
+          }
+        ]
+      }
+    },
+    "displayName": {
+      "literal": "Layout5 Copy"
+    }
+  },
+  "layouts/custom_ea14677d-78e4-4b9d-b171-2b21fa1bbc53": {
+    "definition": {
+      "literal": {
+        "componentName": "Grid",
+        "props": {
+          "gridTemplateColumns": "1fr 3fr",
+          "gridTemplateRows": "1fr 1fr 1fr",
+          "gridTemplateAreas": "\"area-b area-a\" \"area-c area-a\" \"area-d area-a\""
+        },
+        "items": [
+          {
+            "componentName": "WidgetArea",
+            "props": {
+              "gridArea": "area-a",
+              "name": "Area A",
+              "gridAutoFlow": "column"
+            }
+          },
+          {
+            "componentName": "WidgetArea",
+            "props": {
+              "gridArea": "area-b",
+              "name": "Area B",
+              "gridAutoFlow": "row"
+            }
+          },
+          {
+            "componentName": "WidgetArea",
+            "props": {
+              "gridArea": "area-c",
+              "name": "Area C",
+              "gridAutoFlow": "row"
+            }
+          },
+          {
+            "componentName": "WidgetArea",
+            "props": {
+              "gridArea": "area-d",
+              "name": "Area D",
+              "gridAutoFlow": "row"
+            }
+          }
+        ]
+      }
+    },
+    "displayName": {
+      "literal": "Layout10 Copy"
+    }
+  },
+  "pages/home": {
+    "onload": {
+      "aimms": {
+        "run": "pr_goto_InputMainPage"
+      }
+    }
+  },
+  "pages/main_input_page": {
+    "aimms.widget.type": {
+      "literal": "pagev2-grid"
+    },
+    "bindings": {
+      "literal": [
+        {
+          "widgetUri": "Total Budget",
+          "gridArea": "area-d",
+          "dndId": "area-dTotal Budget0"
+        },
+        {
+          "widgetUri": "Forbidden Family",
+          "gridArea": "area-c",
+          "dndId": "area-cForbidden Family1"
+        },
+        {
+          "widgetUri": "Region Areas",
+          "gridArea": "area-b",
+          "dndId": "area-bRegion Areas2"
+        },
+        {
+          "widgetUri": "Sequestration",
+          "gridArea": "area-b",
+          "dndId": "area-bSequestration3"
+        },
+        {
+          "widgetUri": "Cost",
+          "gridArea": "area-b",
+          "dndId": "Unassigned widgetsCost5"
+        },
+        {
+          "widgetUri": "Family Trees",
+          "gridArea": "area-a",
+          "dndId": "area-aFamily Trees4"
+        }
+      ]
+    },
+    "layoutId": {
+      "literal": "custom_3c6f3b46-ece0-4647-b9ee-fdc7039ee8c4"
+    },
+    "secondarypageactions": {
+      "aimms": {
+        "contents": [
+          "p_SecondaryActionSpec_Input"
+        ],
+        "slices": [
+          {
+            "identifier": "p_SecondaryActionSpec_Input",
+            "slice": [
+              {
+                "index": "webui::indexPageExtension",
+                "type": "free",
+                "value": "webui::indexPageExtension"
+              },
+              {
+                "index": "webui::indexWidgetActionSpec",
+                "type": "free",
+                "value": "webui::indexWidgetActionSpec"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "widgets": {
+      "literal": [
+        {
+          "uri": "Family Trees",
+          "layoutInfo": {}
+        },
+        {
+          "uri": "Region Areas",
+          "layoutInfo": {}
+        },
+        {
+          "uri": "Forbidden Family",
+          "layoutInfo": {}
+        },
+        {
+          "uri": "Total Budget",
+          "layoutInfo": {}
+        },
+        {
+          "uri": "Cost",
+          "layoutInfo": {}
+        },
+        {
+          "uri": "Sequestration",
+          "layoutInfo": {}
+        }
+      ]
+    }
+  },
+  "pages/result_page": {
+    "aimms.widget.type": {
+      "literal": "pagev2-grid"
+    },
+    "bindings": {
+      "literal": [
+        {
+          "widgetUri": "Budget Limit per Region",
+          "gridArea": "area-b",
+          "dndId": "area-aBudget Limit per Region2"
+        },
+        {
+          "widgetUri": "Total CO2",
+          "gridArea": "area-c",
+          "dndId": "area-cTotal CO20"
+        },
+        {
+          "widgetUri": "Total Cost",
+          "gridArea": "area-d",
+          "dndId": "area-dTotal Cost1"
+        },
+        {
+          "widgetUri": "Budget per area",
+          "gridArea": "area-a",
+          "dndId": "area-aBudget per area3"
+        },
+        {
+          "widgetUri": "Tree in Region",
+          "gridArea": "area-a",
+          "dndId": "area-aTree in Region4"
+        }
+      ]
+    },
+    "layoutId": {
+      "literal": "custom_ea14677d-78e4-4b9d-b171-2b21fa1bbc53"
+    },
+    "secondarypageactions": {
+      "aimms": {
+        "contents": [
+          "p_SecondaryActionSpec_Result"
+        ],
+        "slices": [
+          {
+            "identifier": "p_SecondaryActionSpec_Result",
+            "slice": [
+              {
+                "index": "webui::indexPageExtension",
+                "type": "free",
+                "value": "webui::indexPageExtension"
+              },
+              {
+                "index": "webui::indexWidgetActionSpec",
+                "type": "free",
+                "value": "webui::indexWidgetActionSpec"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "widgets": {
+      "literal": [
+        {
+          "uri": "Tree in Region",
+          "layoutInfo": {}
+        },
+        {
+          "uri": "Total Cost",
+          "layoutInfo": {}
+        },
+        {
+          "uri": "Total CO2",
+          "layoutInfo": {}
+        },
+        {
+          "uri": "Budget Limit per Region",
+          "layoutInfo": {}
+        },
+        {
+          "uri": "Budget per area",
+          "layoutInfo": {}
+        }
+      ]
+    }
+  },
+  "widgets/Budget Limit per Region": {
+    "aimms.widget.type": {
+      "literal": "table"
+    },
+    "contents": {
+      "aimms": {
+        "contents": [
+          "p_budget_division"
+        ]
+      }
+    },
+    "contents.displaydomain": {
+      "literal": {
+        "p_budget_division": "1"
+      }
+    },
+    "contents.partition": {
+      "literal": {
+        "rowHeader": [
+          "<IDENTIFIER-SET>"
+        ],
+        "colHeader": [],
+        "aggregated": []
+      }
+    },
+    "custom.column.widths": {
+      "literal": [
+        {
+          "type": "rowHeader",
+          "colKey": "<IDENTIFIER-SET>",
+          "width": 25.11
+        },
+        {
+          "type": "colHeader",
+          "colKey": {},
+          "width": 15.41
+        }
+      ]
+    },
+    "name": {
+      "literal": "Budget Limit per Region"
+    },
+    "title": {
+      "literal": "Budget per region?"
+    }
+  },
+  "widgets/Budget per area": {
+    "aimms.widget.type": {
+      "literal": "barchart"
+    },
+    "contents": {
+      "aimms": {
+        "contents": [
+          "p_budget_region"
+        ]
+      }
+    },
+    "contents.displaydomain": {
+      "literal": {
+        "p_budget_region": "1"
+      }
+    },
+    "contents.partition": {
+      "literal": {
+        "header": [
+          "i_region"
+        ],
+        "grouped": [],
+        "stacked": [],
+        "aggregated": [
+          "<IDENTIFIER-SET>"
+        ]
+      }
+    },
+    "name": {
+      "literal": "Budget per area"
+    },
+    "title": {
+      "literal": "Budget per region ($)"
+    },
+    "yaxis.min": {
+      "literal": 0
+    }
+  },
+  "widgets/Cost": {
+    "aimms.widget.type": {
+      "literal": "table"
+    },
+    "contents": {
+      "aimms": {
+        "contents": [
+          "p_cost"
+        ]
+      }
+    },
+    "contents.displaydomain": {
+      "literal": {
+        "p_cost": "1"
+      }
+    },
+    "contents.numdecimals": {
+      "literal": 0
+    },
+    "contents.partition": {
+      "literal": {
+        "rowHeader": [
+          "i_tree"
+        ],
+        "colHeader": [],
+        "aggregated": [
+          "<IDENTIFIER-SET>"
+        ]
+      }
+    },
+    "custom.column.widths": {
+      "literal": [
+        {
+          "type": "colHeader",
+          "colKey": {},
+          "width": 12.37
+        }
+      ]
+    },
+    "name": {
+      "literal": "Cost"
+    },
+    "title": {
+      "literal": "Operating Cost"
+    }
+  },
+  "widgets/Family Trees": {
+    "aimms.widget.type": {
+      "literal": "table"
+    },
+    "contents": {
+      "aimms": {
+        "contents": [
+          "p_regionFamilies"
+        ]
+      }
+    },
+    "contents.displaydomain": {
+      "literal": {
+        "p_regionfamilies": "1"
+      }
+    },
+    "contents.partition": {
+      "literal": {
+        "rowHeader": [
+          "i_tree"
+        ],
+        "colHeader": [],
+        "aggregated": [
+          "<IDENTIFIER-SET>"
+        ]
+      }
+    },
+    "custom.column.widths": {
+      "literal": [
+        {
+          "type": "colHeader",
+          "colKey": {},
+          "width": 17.16
+        },
+        {
+          "type": "rowHeader",
+          "colKey": "i_region",
+          "width": 21.44
+        },
+        {
+          "type": "colHeader",
+          "colKey": {
+            "i_family": "Family-1"
+          },
+          "width": 12.91
+        },
+        {
+          "type": "colHeader",
+          "colKey": {
+            "i_family": "Family-2"
+          },
+          "width": 13.33
+        },
+        {
+          "type": "colHeader",
+          "colKey": {
+            "i_family": "Family-3"
+          },
+          "width": 14.16
+        },
+        {
+          "type": "colHeader",
+          "colKey": {
+            "i_family": "Family-4"
+          },
+          "width": 14.16
+        },
+        {
+          "type": "colHeader",
+          "colKey": {
+            "i_family": "Family-5"
+          },
+          "width": 13.54
+        }
+      ]
+    },
+    "name": {
+      "literal": "Family Trees"
+    }
+  },
+  "widgets/Forbidden Family": {
+    "aimms.widget.type": {
+      "literal": "table"
+    },
+    "contents": {
+      "aimms": {
+        "contents": [
+          "p_forbidden"
+        ]
+      }
+    },
+    "contents.displaydomain": {
+      "literal": {
+        "p_forbidden": "1"
+      }
+    },
+    "contents.partition": {
+      "literal": {
+        "rowHeader": [
+          "i_family"
+        ],
+        "colHeader": [
+          "j_family"
+        ],
+        "aggregated": [
+          "<IDENTIFIER-SET>"
+        ]
+      }
+    },
+    "custom.column.widths": {
+      "literal": [
+        {
+          "type": "colHeader",
+          "colKey": {
+            "j_family": "Family-1"
+          },
+          "width": 15.83
+        },
+        {
+          "type": "colHeader",
+          "colKey": {
+            "j_family": "Family-2"
+          },
+          "width": 13.75
+        },
+        {
+          "type": "colHeader",
+          "colKey": {
+            "j_family": "Family-3"
+          },
+          "width": 12.7
+        },
+        {
+          "type": "colHeader",
+          "colKey": {
+            "j_family": "Family-4"
+          },
+          "width": 12.91
+        },
+        {
+          "type": "colHeader",
+          "colKey": {
+            "j_family": "Family-5"
+          },
+          "width": 14.16
+        },
+        {
+          "type": "rowHeader",
+          "width": 14.59
+        },
+        {
+          "type": "rowHeader",
+          "colKey": "i_family",
+          "width": 21.58
+        }
+      ]
+    },
+    "name": {
+      "literal": "Forbidden Family"
+    }
+  },
+  "widgets/Region Areas": {
+    "aimms.widget.type": {
+      "literal": "table"
+    },
+    "contents": {
+      "aimms": {
+        "contents": [
+          "p_area"
+        ]
+      }
+    },
+    "contents.displaydomain": {
+      "literal": {
+        "p_area": "1"
+      }
+    },
+    "contents.numdecimals": {
+      "literal": 0
+    },
+    "contents.partition": {
+      "literal": {
+        "rowHeader": [
+          "i_region"
+        ],
+        "colHeader": [
+          "<IDENTIFIER-SET>"
+        ],
+        "aggregated": []
+      }
+    },
+    "custom.column.widths": {
+      "literal": [
+        {
+          "type": "rowHeader",
+          "colKey": "<IDENTIFIER-SET>",
+          "width": 22.6
+        },
+        {
+          "type": "colHeader",
+          "colKey": {
+            "i_region": "Region-1"
+          },
+          "width": 13.95
+        },
+        {
+          "type": "colHeader",
+          "colKey": {
+            "<IDENTIFIER-SET>": "p_area"
+          },
+          "width": 18.66
+        }
+      ]
+    },
+    "name": {
+      "literal": "Region Areas"
+    },
+    "title": {
+      "literal": "Areas per region"
+    }
+  },
+  "widgets/Sequestration": {
+    "aimms.widget.type": {
+      "literal": "table"
+    },
+    "contents": {
+      "aimms": {
+        "contents": [
+          "p_sequestration"
+        ]
+      }
+    },
+    "contents.displaydomain": {
+      "literal": {
+        "p_sequestration": "1"
+      }
+    },
+    "contents.numdecimals": {
+      "literal": 0
+    },
+    "contents.partition": {
+      "literal": {
+        "rowHeader": [
+          "i_tree"
+        ],
+        "colHeader": [],
+        "aggregated": [
+          "<IDENTIFIER-SET>"
+        ]
+      }
+    },
+    "custom.column.widths": {
+      "literal": [
+        {
+          "type": "colHeader",
+          "colKey": {},
+          "width": 15.06
+        }
+      ]
+    },
+    "name": {
+      "literal": "Sequestration"
+    },
+    "title": {
+      "literal": "CO2 sequestration"
+    }
+  },
+  "widgets/Total Budget": {
+    "aimms.widget.type": {
+      "literal": "scalar"
+    },
+    "contents": {
+      "aimms": {
+        "contents": [
+          "p_budget"
+        ]
+      }
+    },
+    "contents.displaydomain": {
+      "literal": {
+        "p_budget": "1"
+      }
+    },
+    "contents.numdecimals": {
+      "literal": 0
+    },
+    "contents.partition": {
+      "literal": {
+        "keys": [],
+        "aggregated": [
+          "<IDENTIFIER-SET>"
+        ]
+      }
+    },
+    "name": {
+      "literal": "Total Budget"
+    },
+    "title": {
+      "literal": "Total Budget"
+    }
+  },
+  "widgets/Total CO2": {
+    "aimms.widget.type": {
+      "literal": "scalar"
+    },
+    "contents": {
+      "aimms": {
+        "contents": [
+          "v_CO2"
+        ]
+      }
+    },
+    "contents.displaydomain": {
+      "literal": {
+        "v_co2": "1"
+      }
+    },
+    "contents.numdecimals": {
+      "literal": 0
+    },
+    "contents.partition": {
+      "literal": {
+        "header": [],
+        "grouped": [],
+        "stacked": [],
+        "aggregated": [
+          "<IDENTIFIER-SET>"
+        ]
+      }
+    },
+    "name": {
+      "literal": "Total CO2"
+    },
+    "title": {
+      "literal": "Total CO2 sequestered"
+    },
+    "yaxis.min": {
+      "literal": 0
+    }
+  },
+  "widgets/Total Cost": {
+    "aimms.widget.type": {
+      "literal": "scalar"
+    },
+    "contents": {
+      "aimms": {
+        "contents": [
+          "c_cost_total"
+        ]
+      }
+    },
+    "contents.displaydomain": {
+      "literal": {
+        "c_cost_total": "1"
+      }
+    },
+    "contents.numdecimals": {
+      "literal": 0
+    },
+    "contents.partition": {
+      "literal": {
+        "keys": [],
+        "aggregated": [
+          "<IDENTIFIER-SET>"
+        ]
+      }
+    },
+    "name": {
+      "literal": "Total Cost"
+    },
+    "title": {
+      "literal": "Total Cost"
+    }
+  },
+  "widgets/Tree in Region": {
+    "aimms.widget.type": {
+      "literal": "table"
+    },
+    "contents": {
+      "aimms": {
+        "contents": [
+          "v_tree_in_region"
+        ]
+      }
+    },
+    "contents.displaydomain": {
+      "literal": {
+        "v_tree_in_region": "1"
+      }
+    },
+    "contents.numdecimals": {
+      "literal": 0
+    },
+    "contents.partition": {
+      "literal": {
+        "rowHeader": [
+          "i_tree"
+        ],
+        "colHeader": [
+          "i_region"
+        ],
+        "aggregated": [
+          "<IDENTIFIER-SET>"
+        ]
+      }
+    },
+    "custom.column.widths": {
+      "literal": [
+        {
+          "type": "rowHeader",
+          "colKey": "i_tree",
+          "width": 17.71
+        },
+        {
+          "type": "colHeader",
+          "colKey": {
+            "i_region": "Region-1"
+          },
+          "width": 15.75
+        },
+        {
+          "type": "colHeader",
+          "colKey": {
+            "i_region": "Region-2"
+          },
+          "width": 13.75
+        },
+        {
+          "type": "colHeader",
+          "colKey": {
+            "i_region": "Region-3"
+          },
+          "width": 14.16
+        },
+        {
+          "type": "colHeader",
+          "colKey": {
+            "i_region": "Region-4"
+          },
+          "width": 14.55
+        }
+      ]
+    },
+    "name": {
+      "literal": "Tree in Region"
+    }
+  }
+}
